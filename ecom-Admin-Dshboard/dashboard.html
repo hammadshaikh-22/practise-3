@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AdminPro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+            <div class="header">
+                <h1 class="page-title">Dashboard Overview</h1>
+                <div class="user-profile">
+                    <span id="user-name">Admin</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">Total Users</div>
+                    <div class="stat-value" id="stats-users">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Categories</div>
+                    <div class="stat-value" id="stats-categories">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Products</div>
+                    <div class="stat-value" id="stats-products">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Total Orders</div>
+                    <div class="stat-value" id="stats-orders">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        checkAuth();
+        document.getElementById('sidebar-container').innerHTML = getSidebar();
+
+        const currentUser = JSON.parse(localStorage.getItem('current_user'));
+        document.getElementById('user-name').textContent = currentUser.name;
+
+        // Load Stats
+        document.getElementById('stats-users').textContent = getData('users').length;
+        document.getElementById('stats-categories').textContent = getData('categories').length;
+        document.getElementById('stats-products').textContent = getData('products').length;
+        document.getElementById('stats-orders').textContent = getData('orders').length;
+    </script>
+</body>
+</html>
