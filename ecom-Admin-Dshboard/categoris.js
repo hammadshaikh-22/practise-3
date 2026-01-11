@@ -1,6 +1,7 @@
 checkAuth();
 updateBtn = document.getElementById("updateBtn")
 saveBtn = document.getElementById("saveBtn")
+var selectedId= ""
 document.getElementById("sidebar-container").innerHTML = getSidebar();
 
 console.log(firebase.database())
@@ -18,6 +19,7 @@ async function openModal(id = null) {
     document.getElementById("modal-title").textContent = id
         ? "Edit Category"
         : "Add Category";
+        selectedId=id
 
         if(id!=null){
             await firebase.database().ref("CATGEORY").child(id).get()
@@ -88,6 +90,36 @@ async function addNewData() {
 
     closeModal();
 };
+
+async function updateData() {
+    
+    // const id = document.getElementById("edit-id").value;
+    const name = document.getElementById("cat-name").value;
+    const count = document.getElementById("cat-count").value;
+
+    //   push=> make new key => key =>make new key 
+    //   set => set data /replace
+
+    // Math.random()*1000=>0,1,2,
+    // var catKey = firebase.database().ref("CATGEORY").push().getKey() // key generate   5
+    // uid => uid
+
+    var object = {
+        catName: name,
+        count: count,
+        catKey: selectedId
+    }
+
+    console.log(object)
+
+    await firebase.database().ref("CATGEORY").child(selectedId).set(object)
+    alert("Updated category")
+    getAllCategory()
+
+
+    closeModal();
+};
+
 
 async function getAllCategory() {
     await firebase.database().ref("CATGEORY").get().then((databaseCat) => {
