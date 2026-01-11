@@ -11,18 +11,24 @@ const modalForm = document.getElementById("modal-form");
 
 
 
-function openModal(id = null) {
+async function openModal(id = null) {
     document.getElementById("edit-id").value = id || "";
     document.getElementById("modal-title").textContent = id
         ? "Edit Category"
         : "Add Category";
-    if (id) {
-        const cat = categories.find((c) => c.id === id);
-        document.getElementById("cat-name").value = cat.name;
-        document.getElementById("cat-count").value = cat.count;
-    } else {
-        modalForm.reset();
-    }
+
+        if(id!=null){
+            await firebase.database().ref("CATGEORY").child(id).get()
+            .then((snapdb)=>{
+                console.log(snapdb.val())
+                document.getElementById("cat-name").value = snapdb.val()["catName"]
+                document.getElementById("cat-count").value = snapdb.val()["count"]
+                
+            })
+            .catch((e)=>{
+                console.log(e)
+            })
+        }
     modal.classList.add("active");
 }
 
@@ -97,7 +103,7 @@ async function getAllCategory() {
           <td>${data[i].catName}</td>
           <td>${data[i]["count"]}</td>
           <td>
-          <button>Edit</button>
+          <button onclick="openModal('${data[i]["catKey"]}')">Edit</button>
           <button onclick="deleteItem('${data[i]["catKey"]}')">Delete</button>
           </td>
           </tr>
