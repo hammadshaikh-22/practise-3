@@ -33,6 +33,12 @@ async function openModal(id = null) {
                 console.log(e)
             })
         }
+        else{
+            document.getElementById("cat-name").value = ""
+                document.getElementById("cat-count").value = ""
+                updateBtn.style.display = "none"
+                saveBtn.style.display = "inline"
+        }
     modal.classList.add("active");
 }
 
