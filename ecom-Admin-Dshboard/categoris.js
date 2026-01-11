@@ -1,4 +1,6 @@
 checkAuth();
+updateBtn = document.getElementById("updateBtn")
+saveBtn = document.getElementById("saveBtn")
 document.getElementById("sidebar-container").innerHTML = getSidebar();
 
 console.log(firebase.database())
@@ -23,6 +25,8 @@ async function openModal(id = null) {
                 console.log(snapdb.val())
                 document.getElementById("cat-name").value = snapdb.val()["catName"]
                 document.getElementById("cat-count").value = snapdb.val()["count"]
+                updateBtn.style.display = "inline"
+                saveBtn.style.display = "none"
                 
             })
             .catch((e)=>{
@@ -103,8 +107,8 @@ async function getAllCategory() {
           <td>${data[i].catName}</td>
           <td>${data[i]["count"]}</td>
           <td>
-          <button onclick="openModal('${data[i]["catKey"]}')">Edit</button>
-          <button onclick="deleteItem('${data[i]["catKey"]}')">Delete</button>
+          <button onclick="openModal('${data[i]["catKey"]}')" class = "btn" style = "width: 100px;">Edit</button>
+          <button onclick="deleteItem('${data[i]["catKey"]}')" class = "btn" style = "width: 100px;">Delete</button>
           </td>
           </tr>
           `
