@@ -60,8 +60,8 @@ function del(id) {
 
 
 //add new category
-modalForm.onsubmit = async (e) => {
-    e.preventDefault();
+async function addNewData() {
+    
     const id = document.getElementById("edit-id").value;
     const name = document.getElementById("cat-name").value;
     const count = document.getElementById("cat-count").value;
@@ -113,8 +113,8 @@ async function getAllCategory() {
           <td>${data[i].catName}</td>
           <td>${data[i]["count"]}</td>
           <td>
-          <button onclick="openModal('${data[i]["catKey"]}')" class = "btn" style = "width: 100px;">Edit</button>
-          <button onclick="deleteItem('${data[i]["catKey"]}')" class = "btn" style = "width: 100px;">Delete</button>
+          <button onclick="openModal('${data[i]["catKey"]}')" class = "btn" style = "width: 100px; background-color: yellow; color: black">Edit</button>
+          <button onclick="deleteItem('${data[i]["catKey"]}')" class = "btn" style = "width: 100px; background-color: red; color: black; margin-left: 10px;">Delete</button>
           </td>
           </tr>
           `
