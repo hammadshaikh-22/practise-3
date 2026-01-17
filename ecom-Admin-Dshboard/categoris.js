@@ -1,7 +1,7 @@
 checkAuth();
 updateBtn = document.getElementById("updateBtn")
 saveBtn = document.getElementById("saveBtn")
-var selectedId= ""
+var selectedId = ""
 document.getElementById("sidebar-container").innerHTML = getSidebar();
 
 console.log(firebase.database())
@@ -19,28 +19,28 @@ async function openModal(id = null) {
     document.getElementById("modal-title").textContent = id
         ? "Edit Category"
         : "Add Category";
-        selectedId=id
+    selectedId = id
 
-        if(id!=null){
-            await firebase.database().ref("CATGEORY").child(id).get()
-            .then((snapdb)=>{
+    if (id != null) {
+        await firebase.database().ref("CATGEORY").child(id).get()
+            .then((snapdb) => {
                 console.log(snapdb.val())
                 document.getElementById("cat-name").value = snapdb.val()["catName"]
                 document.getElementById("cat-count").value = snapdb.val()["count"]
                 updateBtn.style.display = "inline"
                 saveBtn.style.display = "none"
-                
+
             })
-            .catch((e)=>{
+            .catch((e) => {
                 console.log(e)
             })
-        }
-        else{
-            document.getElementById("cat-name").value = ""
-                document.getElementById("cat-count").value = ""
-                updateBtn.style.display = "none"
-                saveBtn.style.display = "inline"
-        }
+    }
+    else {
+        document.getElementById("cat-name").value = ""
+        document.getElementById("cat-count").value = ""
+        updateBtn.style.display = "none"
+        saveBtn.style.display = "inline"
+    }
     modal.classList.add("active");
 }
 
@@ -63,7 +63,7 @@ function del(id) {
 
 //add new category
 async function addNewData() {
-    
+
     const id = document.getElementById("edit-id").value;
     const name = document.getElementById("cat-name").value;
     const count = document.getElementById("cat-count").value;
@@ -92,7 +92,7 @@ async function addNewData() {
 };
 
 async function updateData() {
-    
+
     // const id = document.getElementById("edit-id").value;
     const name = document.getElementById("cat-name").value;
     const count = document.getElementById("cat-count").value;
@@ -126,20 +126,22 @@ async function getAllCategory() {
 
         console.log(databaseCat) //FIREBASE READ FORMATE
         var db = databaseCat.val() //convert firebase data into USER read able formaTE=>ojhect
-
+        if (db == null) {
+            tableBody.innerHTML = "<p style = 'text-align: center;'>No categories found</p>"
+        }
         //object to convert into array
 
         // Object.values
         // Object.keys
-
-        var data = Object.values(databaseCat.val())
-        // var key = Object.keys(databaseCat.val())
-        console.log(data)
-        // console.log(key)
-        tableBody.innerHTML = ""
-        for (var i = 0; i < data.length; i++) {
-            console.log(data[i])
-            tableBody.innerHTML += `
+        else {
+            var data = Object.values(databaseCat.val())
+            // var key = Object.keys(databaseCat.val())
+            console.log(data)
+            // console.log(key)
+            tableBody.innerHTML = ""
+            for (var i = 0; i < data.length; i++) {
+                console.log(data[i])
+                tableBody.innerHTML += `
           <tr>
           <td>${i + 1}</td>
           <td>${data[i].catName}</td>
@@ -151,7 +153,9 @@ async function getAllCategory() {
           </tr>
           `
 
+            }
         }
+
 
 
 
@@ -163,7 +167,7 @@ async function getAllCategory() {
 }
 
 getAllCategory()
-async function deleteItem(key){
+async function deleteItem(key) {
     await firebase.database().ref("CATGEORY").child(key).remove()
     alert("deleted item")
     getAllCategory()

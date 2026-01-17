@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - AdminPro</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .hide{
+            display: none;
+        }
+        .show{
+            display: inline;
+        }
+    </style>
 </head>
+
 <body>
     <div class="dashboard-layout">
         <div id="sidebar-container"></div>
@@ -16,8 +26,11 @@
                     <span id="user-name">Admin</span>
                 </div>
             </div>
-
-            <div class="stats-grid">
+            <div id="loading">
+                <img src="https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyN3VreHppNzd3Nno3em01NnR0OWFoNzZ3cHI2NGY4NDU2OGZwcTdhOCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/L05HgB2h6qICDs5Sms/200.gif"
+                                    alt="" style="text-align: center;">
+            </div>
+            <div class="stats-grid hide" id="dashData">
                 <div class="stat-card">
                     <div class="stat-title">Total Users</div>
                     <div class="stat-value" id="stats-users">0</div>
@@ -37,8 +50,24 @@
             </div>
         </div>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-database-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuqZOTXkl8AR5zdkGT4VGZyHiVTEH-Bmk",
+            authDomain: "ecom-app-a0848.firebaseapp.com",
+            databaseURL: "https://ecom-app-a0848-default-rtdb.firebaseio.com/",
+            projectId: "ecom-app-a0848",
+            storageBucket: "ecom-app-a0848.firebasestorage.app",
+            messagingSenderId: "199558714844",
+            appId: "1:199558714844:web:e22c4216400fe5681eeb19",
+            measurementId: "G-LG47T79058"
+        };
 
+        firebase.initializeApp(firebaseConfig);
+    </script>
     <script src="script.js"></script>
+    <script src="dashboard.js"></script>
     <script>
         checkAuth();
         document.getElementById('sidebar-container').innerHTML = getSidebar();
@@ -47,10 +76,11 @@
         document.getElementById('user-name').textContent = currentUser.name;
 
         // Load Stats
-        document.getElementById('stats-users').textContent = getData('users').length;
-        document.getElementById('stats-categories').textContent = getData('categories').length;
-        document.getElementById('stats-products').textContent = getData('products').length;
-        document.getElementById('stats-orders').textContent = getData('orders').length;
+        // document.getElementById('stats-users').textContent = getData('users').length;
+        // document.getElementById('stats-categories').textContent = getData('categories').length;
+        // document.getElementById('stats-products').textContent = getData('products').length;
+        // document.getElementById('stats-orders').textContent = getData('orders').length;
     </script>
 </body>
+
 </html>

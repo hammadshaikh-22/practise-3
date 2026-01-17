@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - AdminPro</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="dashboard-layout">
         <div id="sidebar-container"></div>
@@ -57,7 +59,7 @@
                     <label class="form-label">Price</label>
                     <input type="number" class="form-input" id="prod-price" required>
                 </div>
-                <button type="submit" class="btn">Save</button>
+                <button type="submit" class="btn" onclick="AddProduct()">Save</button>
             </form>
         </div>
     </div>
@@ -115,33 +117,62 @@
         }
 
         function del(id) {
-            if(confirm('Are you sure?')) {
+            if (confirm('Are you sure?')) {
                 products = products.filter(p => p.id !== id);
                 setData('products', products);
                 render();
             }
         }
 
-        modalForm.onsubmit = (e) => {
-            e.preventDefault();
-            const id = document.getElementById('edit-id').value;
-            const name = document.getElementById('prod-name').value;
-            const category = document.getElementById('prod-cat').value;
-            const price = document.getElementById('prod-price').value;
+        async function AddProduct() {
+            // e.preventDefault();
+            // const id = document.getElementById('edit-id').value;
+            // const name = document.getElementById('prod-name').value;
+            // const category = document.getElementById('prod-cat').value;
+            // const price = document.getElementById('prod-price').value;
 
-            if (id) {
-                const index = products.findIndex(p => p.id == id);
-                products[index] = { id: parseInt(id), name, category, price: parseInt(price) };
-            } else {
-                const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-                products.push({ id: newId, name, category, price: parseInt(price) });
+            // if (id) {
+            //     const index = products.findIndex(p => p.id == id);
+            //     products[index] = { id: parseInt(id), name, category, price: parseInt(price) };
+            // } else {
+            //     const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+            //     products.push({ id: newId, name, category, price: parseInt(price) });
+            // }
+            // setData('products', products);
+            // render();
+            // closeModal();
+            const id = document.getElementById("edit-id").value;
+            const prodName = document.getElementById("prod-name").value;
+            const prodCat = document.getElementById("prod-cat").value;
+            const prodPrice= document.getElementById("prod-price").value;
+
+            //   push=> make new key => key =>make new key 
+            //   set => set data /replace
+
+            // Math.random()*1000=>0,1,2,
+            var prodKey = firebase.database().ref("PRODUCT").push().getKey() // key generate   5
+            // uid => uid
+
+            var object = {
+                name: prodName,
+                price: prodPrice,
+                cat : prodCat,
+                prodKey : prodKey
             }
-            setData('products', products);
-            render();
+
+            console.log(object)
+
+            await firebase.database().ref("PRODUCT").child(catKey).set(object)
+            alert("add new category")
+            // getAllCategory()
+
+
             closeModal();
+
         };
 
         render();
     </script>
 </body>
+
 </html>
