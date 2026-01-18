@@ -39,6 +39,10 @@
     <!-- Modal -->
     <div class="modal" id="modal">
         <div class="modal-content">
+            <div>
+                <img src="" alt="" id="imgShow">
+                <input type="file" id="img">
+            </div>
             <div class="modal-header">
                 <h2 id="modal-title">Add Product</h2>
                 <button class="close-modal" onclick="closeModal()">&times;</button>
@@ -59,15 +63,40 @@
                     <label class="form-label">Price</label>
                     <input type="number" class="form-input" id="prod-price" required>
                 </div>
-                <button type="submit" class="btn" onclick="AddProduct()">Save</button>
+                <button type="submit" class="btn">Save</button>
             </form>
         </div>
     </div>
-
-    <script src="script.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/12.6.0/firebase-database-compat.js"></script>
     <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBuqZOTXkl8AR5zdkGT4VGZyHiVTEH-Bmk",
+            authDomain: "ecom-app-a0848.firebaseapp.com",
+            databaseURL: "https://ecom-app-a0848-default-rtdb.firebaseio.com/",
+            projectId: "ecom-app-a0848",
+            storageBucket: "ecom-app-a0848.firebasestorage.app",
+            messagingSenderId: "199558714844",
+            appId: "1:199558714844:web:e22c4216400fe5681eeb19",
+            measurementId: "G-LG47T79058"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="script.js"></script>
+    <script src="product.js"></script>
+    <!-- <script>
         checkAuth();
         document.getElementById('sidebar-container').innerHTML = getSidebar();
+        var img  = document.getElementById("img")
+        var imgShow  = document.getElementById("imgShow")
+        img.addEventListener("change", function(){
+            console.log(img.files[0])
+            var imgFile = img.files[0]
+            var imgUrl = URL.createObjectURL(imgFile)
+            imgShow.src = imgUrl
+        })
+        
 
         let products = getData('products');
         const categories = getData('categories');
@@ -117,62 +146,34 @@
         }
 
         function del(id) {
-            if (confirm('Are you sure?')) {
+            if(confirm('Are you sure?')) {
                 products = products.filter(p => p.id !== id);
                 setData('products', products);
                 render();
             }
         }
 
-        async function AddProduct() {
-            // e.preventDefault();
-            // const id = document.getElementById('edit-id').value;
-            // const name = document.getElementById('prod-name').value;
-            // const category = document.getElementById('prod-cat').value;
-            // const price = document.getElementById('prod-price').value;
+        modalForm.onsubmit = (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const name = document.getElementById('prod-name').value;
+            const category = document.getElementById('prod-cat').value;
+            const price = document.getElementById('prod-price').value;
 
-            // if (id) {
-            //     const index = products.findIndex(p => p.id == id);
-            //     products[index] = { id: parseInt(id), name, category, price: parseInt(price) };
-            // } else {
-            //     const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-            //     products.push({ id: newId, name, category, price: parseInt(price) });
-            // }
-            // setData('products', products);
-            // render();
-            // closeModal();
-            const id = document.getElementById("edit-id").value;
-            const prodName = document.getElementById("prod-name").value;
-            const prodCat = document.getElementById("prod-cat").value;
-            const prodPrice= document.getElementById("prod-price").value;
-
-            //   push=> make new key => key =>make new key 
-            //   set => set data /replace
-
-            // Math.random()*1000=>0,1,2,
-            var prodKey = firebase.database().ref("PRODUCT").push().getKey() // key generate   5
-            // uid => uid
-
-            var object = {
-                name: prodName,
-                price: prodPrice,
-                cat : prodCat,
-                prodKey : prodKey
+            if (id) {
+                const index = products.findIndex(p => p.id == id);
+                products[index] = { id: parseInt(id), name, category, price: parseInt(price) };
+            } else {
+                const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+                products.push({ id: newId, name, category, price: parseInt(price) });
             }
-
-            console.log(object)
-
-            await firebase.database().ref("PRODUCT").child(catKey).set(object)
-            alert("add new category")
-            // getAllCategory()
-
-
+            setData('products', products);
+            render();
             closeModal();
-
         };
 
         render();
-    </script>
+    </script> -->
 </body>
 
 </html>
