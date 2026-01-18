@@ -25,6 +25,9 @@ async function getAllCat() {
             console.log(allCat)
             for(var i = 0;i<allCat.length ; i++){
                 console.log(allCat[i])
+                catSelect.innerHTML += `
+                <option value = ${allCat[i].catName}>${allCat[i].catName} </option>
+                `
             }
         })
         .catch((e) => {
