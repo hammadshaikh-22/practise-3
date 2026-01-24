@@ -146,6 +146,7 @@ async function getAllCategory() {
           <td>${i + 1}</td>
           <td>${data[i].catName}</td>
           <td>${data[i]["count"]}</td>
+          
           <td>
           <button onclick="openModal('${data[i]["catKey"]}')" class = "btn" style = "width: 100px; background-color: yellow; color: black">Edit</button>
           <button onclick="deleteItem('${data[i]["catKey"]}')" class = "btn" style = "width: 100px; background-color: red; color: black; margin-left: 10px;">Delete</button>
