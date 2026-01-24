@@ -1,7 +1,31 @@
 document.getElementById("sidebar-container").innerHTML = getSidebar();
 var modal = document.getElementById("modal")
 var catSelect = document.getElementById('prod-cat');
+var prodName = document.getElementById("prod-name")
+var prodCat = document.getElementById("prod-cat")
+var prodPrice = document.getElementById("prod-price")
 
+async function addProd(){
+    event.preventDefault()
+    console.log(prodName.value)
+    console.log(prodCat.value)
+    console.log(prodPrice.value)
+
+    var imgCheck = await uploadImage()
+    if(imgCheck==true){
+        var prodKey = await firebase.database().ref("Products").push().getKey()
+        var object = {
+            prodName : prodName.value,
+            prodCat : prodCat.value,
+            prodPrice : prodPrice.value,
+            prodImage : prodImageUrl,
+            prodKey : prodKey,
+        } 
+        await firebase.database().ref("Products").child(prodKey).set(object)
+        alert("Added new product")
+        closeModal()
+    }
+}
 
 
 
@@ -43,7 +67,8 @@ function openModal(id = null) {
 function closeModal() {
     modal.classList.remove("active")
 }
-function uploadImage() {
+var status = false
+async function uploadImage() {
     event.preventDefault()
     console.log(img.files);
 
@@ -55,24 +80,26 @@ function uploadImage() {
     } else {
         const formdata = new FormData();
         formdata.append("file", img.files[0]);
-        formdata.append("upload_preset", "name");
+        formdata.append("upload_preset", "STORAGE_ADMIN");
 
         const requestOptions = {
             method: "POST",
             body: formdata,
             redirect: "follow",
         };
-
-        fetch(
-            "https://api.cloudinary.com/v1_1/cloudname/image/upload",
+        var status = false
+        await fetch(
+            "https://api.cloudinary.com/v1_1/ds1ud4hr4/image/upload",
             requestOptions
         )
             .then((response) => response.json())
             .then((data) => {
                 console.log(data.secure_url);
-                userImageUrl = data.secure_url;
+                prodImageUrl = data.secure_url;
+                status = true
             })
             .catch((error) => console.error(error));
     }
+    return status
 }
 getAllCat()
