@@ -5,6 +5,10 @@ var prodName = document.getElementById("prod-name")
 var prodCat = document.getElementById("prod-cat")
 var prodPrice = document.getElementById("prod-price")
 var tableBody = document.getElementById("table-body")
+var updateBtn = document.getElementById("updateBtn")
+var saveBtn = document.getElementById("saveBtn")
+var selectedId = ""
+
 
 async function addProd() {
     event.preventDefault()
@@ -61,8 +65,38 @@ async function getAllCat() {
         })
 }
 
-function openModal(id = null) {
-    modal.classList.add("active")
+async function openModal(id = null) {
+    document.getElementById("edit-id").value = id || "";
+    document.getElementById("modal-title").textContent = id
+        ? "Edit Product"
+        : "Add Product";
+    selectedId = id
+    console.log(selectedId)
+    if (id != null) {
+        await firebase.database().ref("Products").child(id).get()
+            .then((snapdb) => {
+                console.log(snapdb.val())
+                // var selectedProd = Object.values(snapdb.val())
+                // console.log(selectedProd)
+                document.getElementById("prod-name").value = snapdb.val()["prodName"]
+                document.getElementById("prod-cat").value = snapdb.val()["prodCat"]
+                document.getElementById("prod-price").value = snapdb.val()["prodPrice"]
+                updateBtn.style.display = "inline"
+                saveBtn.style.display = "none"
+
+            })
+            .catch((e) => {
+                console.log(e)
+            })
+    }
+    else {
+        document.getElementById("prod-name").value = ""
+        document.getElementById("prod-cat").value = ""
+        document.getElementById("prod-price").value = ""
+        updateBtn.style.display = "none"
+        saveBtn.style.display = "inline"
+    }
+    modal.classList.add("active");
 
 
 }
@@ -158,6 +192,38 @@ async function deleteItem(prodKey) {
     alert("deleted item")
     getAllProduct()
 }
+
+
+async function updateData() {
+
+    // const id = document.getElementById("edit-id").value;
+    const productName = document.getElementById("prod-name").value;
+    const category = document.getElementById("prod-cat").value;
+    const productPrice = document.getElementById("prod-price").value;
+
+    //   push=> make new key => key =>make new key 
+    //   set => set data /replace
+
+    // Math.random()*1000=>0,1,2,
+    // var catKey = firebase.database().ref("CATGEORY").push().getKey() // key generate   5
+    // uid => uid
+
+    var object = {
+            prodName: productName,
+            prodCat: category,
+            prodPrice: productPrice,
+            prodKey: selectedId
+        }
+
+    console.log(object)
+
+    await firebase.database().ref("Products").child(selectedId).set(object)
+    alert("Updated category")
+    getAllProduct()
+
+
+    closeModal();
+};
 
 
 getAllProduct()

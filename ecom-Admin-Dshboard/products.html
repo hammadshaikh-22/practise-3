@@ -41,7 +41,7 @@
                         <tr>
                             <td>
                                 <img src="https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyN3VreHppNzd3Nno3em01NnR0OWFoNzZ3cHI2NGY4NDU2OGZwcTdhOCZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/L05HgB2h6qICDs5Sms/200.gif"
-                                    alt="" style="text-align: center;" class="img">
+                                    alt="" style="text-align: center;">
                             </td>
                         </tr>
                     </tbody>
@@ -77,7 +77,8 @@
                     <label class="form-label">Price</label>
                     <input type="number" class="form-input" id="prod-price" required>
                 </div>
-                <button type="submit" class="btn" onclick="addProd()">Save</button>
+                <button type="submit" class="btn" onclick="addProd()" id="saveBtn">Save</button>
+                <button type="button" class="btn" style="display: none;" id="updateBtn" onclick="updateData()">Update</button>
             </form>
         </div>
     </div>
