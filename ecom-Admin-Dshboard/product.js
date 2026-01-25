@@ -20,7 +20,7 @@ async function addProd() {
             prodCat: prodCat.value,
             prodPrice: prodPrice.value,
             prodImage: prodImageUrl,
-            prodKey: prodKey,
+            prodKey: prodKey
         }
         await firebase.database().ref("Products").child(prodKey).set(object)
         alert("Added new product")
@@ -134,8 +134,8 @@ async function getAllProduct() {
           <td>${data[i]["prodPrice"]}</td>
           <td><img src = "${data[i].prodImage}" style ="width : 100px; height : 100px;" ></td>
           <td>
-          <button onclick="openModal('${data[i]["catKey"]}')" class = "btn" style = "width: 100px; background-color: yellow; color: black">Edit</button>
-          <button onclick="deleteItem('${data[i]["catKey"]}')" class = "btn" style = "width: 100px; background-color: red; color: black; margin-left: 10px;">Delete</button>
+          <button onclick="openModal('${data[i]["prodKey"]}')" class = "btn" style = "width: 100px; background-color: yellow; color: black">Edit</button>
+          <button onclick="deleteItem('${data[i]["prodKey"]}')" class = "btn" style = "width: 100px; background-color: red; color: black; margin-left: 10px;">Delete</button>
           </td>
           </tr>
           `
@@ -152,6 +152,13 @@ async function getAllProduct() {
         })
 
 }
+async function deleteItem(prodKey) {
+    await firebase.database().ref("Products").child(prodKey).remove()
+    // console.log(firebase.database().ref("Product").child(prodKey))
+    alert("deleted item")
+    getAllProduct()
+}
+
 
 getAllProduct()
 getAllCat()
